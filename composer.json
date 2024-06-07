@@ -94,8 +94,8 @@
         "pint": "vendor/bin/pint app tests",
         "phpcs": "vendor/bin/phpcs app -n --standard=PSR12",
         "phpcbf": "vendor/bin/phpcbf app -n --standard=PSR12",
-        "pest": "vendor/bin/pest --stop-on-error --stop-on-failure --parallel --compact",
-        "coverage": "vendor/bin/pest --stop-on-error --stop-on-failure --parallel --compact --coverage",
+        "pest": "vendor/bin/pest --stop-on-error --stop-on-failure  --compact",
+        "coverage": "vendor/bin/pest --stop-on-error --stop-on-failure --compact --coverage",
         "postman": "postman collection run postman/ci-collection.json",
         "pre-commit": [
             "@pint",
