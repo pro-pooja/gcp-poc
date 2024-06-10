@@ -1,10 +1,18 @@
 FROM devopsfnl/image:php-8.2.11-npx
 
-COPY ../composer.json ../composer.lock /var/www/html/
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy Composer files and install dependencies
+COPY ../composer.json ../composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
-COPY ../package.json ../package-lock.json /var/www/html/
+
+# Copy NPM files and install dependencies
+COPY ../package.json ../package-lock.json ./
 RUN npm install
-COPY ../ /var/www/html
+
+# Copy the rest of the application code
+COPY ../ ./
 
 # Run npm build
 RUN npm run build
@@ -13,7 +21,8 @@ RUN npm run build
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Expose port 80 and 443
+# Expose ports
 EXPOSE 80 443
+
 # Start Apache server in the foreground
 CMD ["apache2-foreground"]
