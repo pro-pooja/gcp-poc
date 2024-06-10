@@ -1,11 +1,11 @@
 FROM devopsfnl/image:php-8.2.11-npx
 
 # Copy Composer files and install dependencies
-COPY composer.json composer.lock ./
+COPY composer.json composer.lock /var/www/html/
 RUN composer install --no-dev --optimize-autoloader
 
 # Copy application code
-COPY . .
+COPY . /var/www/html
 
 # Run npm commands
 RUN npm install \
