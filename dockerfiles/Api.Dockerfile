@@ -1,11 +1,11 @@
 FROM devopsfnl/image:php-8.2.11-npx
 
-COPY . .
+WORKDIR /app
 
-COPY composer.json composer.json
-COPY composer.lock composer.lock
+# Copy app
+COPY ./app /var/www
 
-RUN composer install 
+RUN composer install --no-scripts --no-autoloader --no-dev
 
 RUN composer run dev
 
