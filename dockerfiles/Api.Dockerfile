@@ -1,15 +1,16 @@
 FROM devopsfnl/image:php-8.2.11-npx
 
 
-# Copy Composer
-COPY composer.lock /var/www/
+WORKDIR /app
 
-RUN php -d memory_limit=1024M /usr/local/bin/composer install --no-scripts --no-autoloader --no-dev
+COPY database/ database/
+COPY composer.json composer.json
+COPY composer.lock composer.lock
 
-# Copy app
-COPY ./ /var/www
 
-RUN set -ex \
-  && php -d memory_limit=1024M /usr/local/bin/composer dump-autoload --optimize
+RUN composer install 
 
-RUN npm install npm run build
+RUN composer run dev
+
+RUN npm install 
+RUN npm run build
