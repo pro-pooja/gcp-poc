@@ -2,7 +2,7 @@ FROM devopsfnl/image:php-8.2.11-npx
 
 
 # Copy Composer
-COPY composer.json composer.lock /var/www/
+COPY composer.lock /var/www/
 
 RUN php -d memory_limit=1024M /usr/local/bin/composer install --no-scripts --no-autoloader --no-dev
 
