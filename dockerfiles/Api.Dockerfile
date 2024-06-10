@@ -3,9 +3,6 @@ FROM devopsfnl/image:php-8.2.11-npx
 # Copy application code to the container
 COPY . /var/www/html
 
-# Set ownership and permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
 # Install PHP dependencies using Composer
 RUN composer install --no-dev --optimize-autoloader
 
