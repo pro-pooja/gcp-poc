@@ -1,53 +1,47 @@
-# Use an official PHP image as a base image
+# Use an official PHP runtime as a parent image
 FROM php:8.1-apache
+
+# Set working directory
+WORKDIR /var/www/html
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
+    libzip-dev \
     zip \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd \
-    && docker-php-ext-install pdo pdo_mysql
+    npm \
+    && docker-php-ext-install zip pdo pdo_mysql
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Set working directory
-WORKDIR /var/www/html
-
 # Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
 
 # Copy existing application directory contents
 COPY . /var/www/html
 
+# Set the correct permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage \
+    && chmod -R 755 /var/www/html/bootstrap/cache
+
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-interaction --optimize-autoloader --no-dev
 
-# Run Laravel commands
-RUN composer run dev
+# Configure git
+RUN git config --global --add safe.directory /var/www/html \
+    && git config core.filemode false
 
-# Set Git configurations
-RUN git config --global --add safe.directory /var/www/html
-RUN git config core.filemode false
-
-# Install Node.js and npm
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
-    apt-get install -y nodejs
-
-# Install NPM dependencies
+# Install Node.js dependencies
 RUN npm install
 
 # Build assets
 RUN npm run build
 
-# Set permissions for Laravel
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Expose port 80 and run Apache in the foreground
+# Expose port 80
 EXPOSE 80
+
+# Run Apache in the foreground
 CMD ["apache2-foreground"]
