@@ -1,47 +1,19 @@
-# Use an official PHP runtime as a parent image
-FROM php:8.1-apache
+FROM devopsfnl/image:php-8.2.11-npx
 
-# Set working directory
-WORKDIR /var/www/html
+RUN echo 'memory_limit = 250M' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    libzip-dev \
-    zip \
-    npm \
-    && docker-php-ext-install zip pdo pdo_mysql
+RUN pecl install -o -f redis &&  rm -rf /tmp/pear &&  docker-php-ext-enable redis
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+ENV PHP_MEMORY_LIMIT=256M
 
-# Install Composer
-COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer
+WORKDIR /app
 
-# Copy existing application directory contents
-COPY . /var/www/html
+COPY . /app
 
-# Set the correct permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
+RUN composer install
 
-# Install PHP dependencies
-RUN composer install --no-interaction --optimize-autoloader --no-dev
-
-# Configure git
-RUN git config --global --add safe.directory /var/www/html \
-    && git config core.filemode false
-
-# Install Node.js dependencies
 RUN npm install
 
-# Build assets
 RUN npm run build
 
-# Expose port 80
-EXPOSE 80
-
-# Run Apache in the foreground
-CMD ["apache2-foreground"]
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
