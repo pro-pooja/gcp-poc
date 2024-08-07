@@ -1,15 +1,15 @@
-FROM devopsfnl/image:php-8.2.11
+FROM devopsfnl/image:php-8.2.11-npx
 
-COPY php.ini /usr/local/etc/php/
+# Copy Composer
 
-composer install
+WORKDIR /app
 
-composer run dev
+COPY . /app
 
-git config --global --add safe.directory /var/www/html
-git config core.filemode false
+RUN php -d memory_limit=1024M /usr/bin/composer install --no-scripts --no-autoloader --no-dev
 
-npm install
-npm run build
+# Copy app
+COPY ./ /var/www
 
-apache2-foreground
+RUN set -ex \
+  && php -d memory_limit=1024M /usr/bin/composer dump-autoload --optimize \
