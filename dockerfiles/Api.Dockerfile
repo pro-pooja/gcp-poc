@@ -1,23 +1,11 @@
 FROM devopsfnl/image:php-8.2.11-npx
 
-# Set working directory
-WORKDIR /var/www/html
+# Copy Composer
+COPY ./app/composer.* /var/www/
 
-COPY . /var/www/html
+RUN php -d memory_limit=1024M /usr/bin/composer install --no-scripts --no-autoloader --no-dev
 
-RUN composer install --no-dev --optimize-autoloader
+# Copy app
+COPY ./app /var/www
 
-RUN npm install
-
-# Run npm build
-RUN npm run build
-
-# Set environment variables
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-# Expose ports
-EXPOSE 80 443
-
-# Start Apache server in the foreground
-CMD ["apache2-foreground"]
+ENTRYPOINT ["/var/www/html/dockerfiles/api-runner"]
