@@ -10,4 +10,4 @@ RUN npm install
 
 RUN npm run build
 
-php artisan serve
+RUN php artisan serve
