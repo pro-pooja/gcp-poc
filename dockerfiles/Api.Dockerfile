@@ -3,12 +3,8 @@ FROM devopsfnl/image:php-8.2.11-npx
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy Composer files and install dependencies
-COPY ../composer.json ../composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
 
-# Copy NPM files and install dependencies
-COPY ../package.json ../package-lock.json ./
 RUN npm install
 
 # Copy the rest of the application code
