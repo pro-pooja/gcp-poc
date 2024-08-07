@@ -10,4 +10,5 @@ RUN npm install
 
 RUN npm run build
 
-RUN php artisan serve
+EXPOSE 8000
+CMD ["php", "artisan", "serve", "--host=0.0.0.0"]
