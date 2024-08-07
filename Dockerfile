@@ -9,3 +9,5 @@ RUN composer install --no-scripts --no-autoloader --no-dev
 RUN npm install
 
 RUN npm run build
+
+php artisan serve
