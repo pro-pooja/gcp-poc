@@ -1,23 +1,15 @@
-FROM devopsfnl/image:php-8.2.11-npx
+FROM devopsfnl/image:php-8.2.11
 
-WORKDIR /var/www/html
+COPY php.ini /usr/local/etc/php/
 
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader
+composer install
 
-COPY package.json package-lock.json ./
-RUN npm install
+composer run dev
 
-COPY . .
+git config --global --add safe.directory /var/www/html
+git config core.filemode false
 
-# Check the contents of the directory
-RUN ls -al
+npm install
+npm run build
 
-RUN npm run build
-
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-EXPOSE 80 443
-
-CMD ["apache2-foreground"]
+apache2-foreground
