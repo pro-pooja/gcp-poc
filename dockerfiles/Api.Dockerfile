@@ -3,12 +3,11 @@ FROM devopsfnl/image:php-8.2.11-npx
 # Set working directory
 WORKDIR /var/www/html
 
+COPY . /var/www/html
+
 RUN composer install --no-dev --optimize-autoloader
 
 RUN npm install
-
-# Copy the rest of the application code
-COPY ../ ./
 
 # Run npm build
 RUN npm run build
