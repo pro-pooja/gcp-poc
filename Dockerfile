@@ -1,5 +1,7 @@
 FROM devopsfnl/image:php-8.2.11-npx
 
+ENV HOST 0.0.0.0
+
 WORKDIR /app
 
 COPY . /app
