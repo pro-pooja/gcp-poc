@@ -6,7 +6,7 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/your-app-image']
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['run', 'deploy', 'your-app', '--image', 'gcr.io/$PROJECT_ID/your-app-image', '--region', 'us-central1']
+    args: ['run', 'deploy', 'your-app', '--image', 'gcr.io/$PROJECT_ID/your-app-image']
 
 images:
   - 'gcr.io/$PROJECT_ID/your-app-image'
