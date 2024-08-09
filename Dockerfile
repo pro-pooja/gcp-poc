@@ -6,11 +6,11 @@ WORKDIR /var/www
 
 COPY . /var/www
 
-RUN composer install --no-scripts --no-autoloader --no-dev
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
-RUN npm install
-
-RUN npm run build
+# Install Node.js dependencies and build assets
+RUN npm install && npm run build
 
 # Update the Apache document root configuration
 COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
@@ -18,8 +18,12 @@ COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
 # Enable Apache mod_rewrite for Laravel
 RUN a2enmod rewrite
 
+# Ensure the correct permissions are set for the application files
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www
+
 # Expose port 80 for the web server
-EXPOSE 8080
+EXPOSE 80
 
 # Start Apache in the foreground
 CMD ["apache2-foreground"]
