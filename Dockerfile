@@ -26,4 +26,4 @@ RUN chown -R www-data:www-data /var/www \
 EXPOSE 80
 
 # Start Apache in the foreground
-CMD ["apache2-foreground"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0"]
