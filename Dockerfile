@@ -2,9 +2,9 @@ FROM devopsfnl/image:php-8.2.11-npx
 
 ENV HOST=0.0.0.0
 
-WORKDIR /app
+WORKDIR /var/www
 
-COPY . /app
+COPY . /var/www
 
 RUN composer install --no-scripts --no-autoloader --no-dev
 
