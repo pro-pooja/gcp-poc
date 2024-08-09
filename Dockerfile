@@ -19,7 +19,7 @@ COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
 # Expose port 80 for the web server
-EXPOSE 80
+EXPOSE 8080
 
 # Start Apache in the foreground
 CMD ["apache2-foreground"]
