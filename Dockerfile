@@ -1,7 +1,5 @@
 FROM devopsfnl/image:php-8.2.11-npx
 
-ENV HOST=0.0.0.0
-
 WORKDIR /var/www
 
 COPY . /var/www
