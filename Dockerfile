@@ -13,6 +13,9 @@ RUN npm install && npm run build
 # Update the Apache document root configuration
 COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
 
+# Ensure Apache listens on port 8080
+RUN sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf
+
 # Enable Apache mod_rewrite for Laravel
 RUN a2enmod rewrite
 
