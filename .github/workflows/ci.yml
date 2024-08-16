@@ -9,8 +9,6 @@ on:
       - '.env.*'
     branches:
       - main
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
   CI:
