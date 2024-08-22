@@ -86,11 +86,9 @@ return [
         'papertrail' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => SyslogUdpHandler::class,
+            'handler' => SocketHandler::class,
             'handler_with' => [
-                'host' => env('PAPERTRAIL_URL'),
-                'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'udp://' . env('PAPERTRAIL_HOST') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'formatter' => env('LOG_PAPERTRAIL_FORMATTER', LineFormatter::class),
             'formatter_with' => [
