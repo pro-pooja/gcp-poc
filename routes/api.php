@@ -32,7 +32,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::get('/features', [FeatureController::class, 'index'])->name('features.index');
 
 Route::get('/', function () {
-    Log::info('This is a log message', [
+    Log::error('This is a log message', [
         'Symfony' => 2.9
 
     ]);
