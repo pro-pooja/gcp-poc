@@ -1,12 +1,8 @@
 FROM devopsfnl/image:php-8.2.11-npx
 
-# Copy Composer
-COPY ./composer.* /var/www/
+# Install the sockets extension and any other necessary extensions
+RUN docker-php-ext-install sockets
 
-RUN php -d memory_limit=1024M /usr/bin/composer install --no-scripts --no-autoloader --no-dev
+COPY php.ini /usr/local/etc/php/
 
-# Copy app
-COPY ./ /var/www
-
-RUN set -ex \
-  && php -d memory_limit=1024M /usr/bin/composer dump-autoload --optimize \
+ENTRYPOINT ["/var/www/html/dockerfiles/api-runner"]
