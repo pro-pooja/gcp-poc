@@ -2,6 +2,7 @@
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\NullHandler;
+use Monolog\Handler\SocketHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
@@ -88,7 +89,7 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'handler' => SocketHandler::class,
             'handler_with' => [
-                'connectionString' => 'udp://' . env('PAPERTRAIL_HOST') . ':' . env('PAPERTRAIL_PORT'),
+                'connectionString' => 'udp://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'formatter' => env('LOG_PAPERTRAIL_FORMATTER', LineFormatter::class),
             'formatter_with' => [
