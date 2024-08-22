@@ -7,6 +7,7 @@ use App\Http\Controllers\v1\Profile\ProfileNotificationController;
 use App\Http\Controllers\v1\Profile\ProfileSubscriptionController;
 use App\Http\Controllers\v1\UserController;
 use App\Http\Controllers\v1\UserInvitationController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::get('/features', [FeatureController::class, 'index'])->name('features.index');
 
 Route::get('/', function () {
+    Log::info('This is a log message', [
+        'Symfony' => 2.9
+
+    ]);
     return ['Symfony' => 2.9];
 })->name('home.api');
 
