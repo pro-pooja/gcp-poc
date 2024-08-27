@@ -16,12 +16,12 @@ COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
 # Ensure Apache listens on port 8080
 RUN sed -i 's/Listen 80/Listen 8000/' /etc/apache2/ports.conf
 
-# Enable Apache mod_rewrite for Laravel
-RUN a2enmod rewrite
-
 # Ensure the correct permissions are set for the application files
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www
 
 # Expose port 80 for the web server
 EXPOSE 8000
+
+# Start the queue listener
+CMD php artisan queue:listen --tries=3
