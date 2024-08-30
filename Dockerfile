@@ -22,6 +22,3 @@ RUN chown -R www-data:www-data /var/www \
 
 # Expose port 80 for the web server
 EXPOSE 8000
-
-# Start the queue listener
-CMD php artisan queue:listen
