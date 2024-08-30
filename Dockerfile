@@ -24,4 +24,4 @@ RUN chown -R www-data:www-data /var/www \
 EXPOSE 8000
 
 # Start the queue listener
-CMD php artisan queue:listen --tries=3
+CMD php artisan queue:listen
